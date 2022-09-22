@@ -1,8 +1,10 @@
+import "dotenv/config.js"
 import createError from 'http-errors'
 import express from 'express'
 import path from 'path'
 import { fileURLToPath } from 'url'
 import logger from 'morgan'
+import './config/database.js'
 
 // import routers
 import { router as indexRouter } from './routes/index.js'
@@ -17,6 +19,12 @@ app.set(
   path.join(path.dirname(fileURLToPath(import.meta.url)), 'views')
 )
 app.set('view engine', 'ejs')
+
+//Custom middleware
+app.use(function(req, res, next) {
+  req.time = new Date().toLocaleTimeString()
+  next()
+})
 
 // middleware
 app.use(logger('dev'))
